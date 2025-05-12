@@ -1,4 +1,16 @@
-# Redis + Elasticsearch Practice Project for AmaranthH 
+# Redis + Elasticsearch Practice Project for AmaranthH
+
+## 고려사항 
+
+- 동기화정책
+- 캐싱처리
+- 형태소 
+- 인기검색어, 최근검색어 ?
+- Exception 처리(이중화정책 고려)
+  - Docker 
+  - K8s
+  - Nginx 
+- Transaction
 
 ## 1. Dependencies 
 
