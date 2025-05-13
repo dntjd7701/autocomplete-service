@@ -1,11 +1,7 @@
+# 테스트용으로만 처리. localhost 서버 정보만 기입할것.
 server:
   port: 8018
 spring:
-  datasource:
-    url: jdbc:mariadb://localhost:3306/autocomplete
-    username: root
-    password: yourpassword
-    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
     ddl-auto: none  # 또는 update
