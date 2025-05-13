@@ -1,0 +1,21 @@
+server:
+  port: 8018
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/autocomplete
+    username: root
+    password: yourpassword
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+    ddl-auto: none  # 또는 update
+    show-sql: true
+  redis:
+    host: localhost
+    port: 6380
+    password: 1234
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
+      username: elastic
+      password: 1234

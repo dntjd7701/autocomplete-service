@@ -28,6 +28,9 @@ test {
 }
 
 dependencies {
+    // hot reload
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
     // 롬복 사용 시 컴파일 시점에 필요한 설정 (@Getter, @Builder 등 코드 자동 생성)
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

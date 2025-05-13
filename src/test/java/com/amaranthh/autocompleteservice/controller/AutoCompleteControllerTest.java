@@ -4,14 +4,14 @@ import com.amaranthh.autocompleteservice.service.IAutoCompleteService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -38,7 +38,7 @@ public class AutoCompleteControllerTest {
         Mockito.when(iAutoCompleteService.getSuggestions(keyword)).thenReturn(mockResult);
 
         // when & then
-        mockMvc.perform(get("/api/autocomplete")  // ✅ (6) GET 요청 시뮬레이션
+        mockMvc.perform(get("/api/autocomplete/getSuggestions")  // ✅ (6) GET 요청 시뮬레이션
                         .param("keyword", keyword)) // 쿼리 파라미터 추가
                 .andExpect(status().isOk())         // ✅ (7) HTTP 200 OK 응답 확인
                 .andExpect(jsonPath("$.length()").value(mockResult.size())) // JSON 배열 길이 확인
