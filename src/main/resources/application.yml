@@ -2,10 +2,6 @@
 server:
   port: 8018
 spring:
-  jpa:
-    hibernate:
-    ddl-auto: none  # 또는 update
-    show-sql: true
   redis:
     host: localhost
     port: 6380

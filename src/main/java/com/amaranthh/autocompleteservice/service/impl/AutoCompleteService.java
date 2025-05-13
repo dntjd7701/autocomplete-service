@@ -46,7 +46,7 @@ public class AutoCompleteService implements IAutoCompleteService {
 
         NativeSearchQuery query = new NativeSearchQueryBuilder()
                 .withQuery(boolQuery)
-                .withPageable(PageRequest.of(0, 3000))
+                .withPageable(PageRequest.of(0, 10))
                 .build();
 
         SearchHits<AutoComplete> hits = elasticsearchRestTemplate.search(query, AutoComplete.class);

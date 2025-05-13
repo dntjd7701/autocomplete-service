@@ -17,10 +17,9 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 public class AutoComplete {
     @Id
     private String id;  // ES 문서의 _id
-
-    @Field(name = "code", type = FieldType.Text)
-    private String code;  // 예: 수가 코드
-
-    @Field(name = "name", type = FieldType.Text)
-    private String name;  // 예: 수가명
+    private String coCd;
+    private String code;
+    private String nameKo;
+    private String nameEn;
+    private String category;
 }

@@ -1,0 +1,46 @@
+{
+  "settings": {
+    "analysis": {
+      "tokenizer": {
+        "nori_edge": {
+          "type": "nori_tokenizer",
+          "decompound_mode": "mixed"
+        },
+        "edge_ngram_tokenizer_en": {
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 20,
+          "token_chars": ["letter", "digit"]
+        }
+      },
+      "analyzer": {
+        "autocomplete_ko": {
+          "type": "custom",
+          "tokenizer": "nori_edge",
+          "filter": ["lowercase"]
+        },
+        "autocomplete_en": {
+          "type": "custom",
+          "tokenizer": "edge_ngram_tokenizer_en",
+          "filter": ["lowercase"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "code": {
+        "type": "text",
+        "analyzer": "autocomplete_en"
+      },
+      "name_ko": {
+        "type": "text",
+        "analyzer": "autocomplete_ko"
+      },
+      "name_en": {
+        "type": "text",
+        "analyzer": "autocomplete_en"
+      }
+    }
+  }
+}
