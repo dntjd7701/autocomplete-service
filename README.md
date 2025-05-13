@@ -1,5 +1,34 @@
 # Redis + Elasticsearch Practice Project for AmaranthH
 
+## 2025-05-13
+
+현재 Version update 미진행, 차후 업데이트 예정  
+
+- Spring boot 2.3.x
+
+> build.gradle 
+
+```groovy
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.3.9.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+}
+```
+
+> gradle-wrapper.properties
+
+```groovy 
+distributionUrl=https\://services.gradle.org/distributions/gradle-6.8.3-bin.zip
+```
+
+> JVM 
+
+```bash
+1.8로 설정 
+```
+
+
 ## 고려사항 
 
 - 동기화정책
