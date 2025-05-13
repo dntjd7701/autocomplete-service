@@ -1,5 +1,52 @@
 # Redis + Elasticsearch Practice Project for AmaranthH
 
+## 프로젝트 구조 
+
+```bash
+autocomplete-service/
+│
+├── build.gradle
+├── docker-compose.yml
+├── settings.gradle
+│
+├── src/
+│   ├── main/
+│   │   ├── java/com/example/autocomplete/
+│   │   │   ├── config/           # 설정 (Redis, Elasticsearch, DB, Swagger)
+│   │   │   ├── controller/       # REST API
+│   │   │   ├── domain/           # Entity 및 JPA 매핑
+│   │   │   ├── dto/              # Request/Response DTO
+│   │   │   ├── repository/       # JPA/Redis/ES Repository
+│   │   │   ├── service/          # 핵심 비즈니스 로직
+│   │   │   └── util/             # 유틸 클래스 (ES query builder 등)
+│   │   └── resources/
+│   │       ├── application.yml
+│   │       └── logback-spring.xml
+│   │
+│   └── test/java/com/example/autocomplete/
+│       ├── controller/
+│       ├── service/
+│       └── repository/
+
+```
+
+## 흐름도 구성 
+
+```scss
+사용자 입력
+   ↓
+Spring REST API (검색 요청)
+   ↓
+Redis Cache 조회 → Cache hit → 결과 반환
+                     ↓ miss
+              Elasticsearch 검색
+                     ↓
+              DB fallback (옵션)
+                     ↓
+        결과 Redis 저장 후 클라이언트 응답
+```
+
+
 ## 2025-05-13
 
 현재 Version update 미진행, 차후 업데이트 예정  
@@ -22,10 +69,10 @@ plugins {
 distributionUrl=https\://services.gradle.org/distributions/gradle-6.8.3-bin.zip
 ```
 
-> JVM 
+> Java 
 
 ```bash
-1.8로 설정 
+11 
 ```
 
 
