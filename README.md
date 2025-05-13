@@ -88,32 +88,23 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-6.8.3-bin.zip
   - Nginx 
 - Transaction
 
-## 1. Dependencies 
+---
 
-```groovy
-dependencies {
-    // Spring MVC 및 REST API 개발을 위한 기본 웹 스타터
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+## Tips 
 
-    // Redis 사용을 위한 스타터 (RedisTemplate, @Cacheable 등 지원)
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+#### 실행 시 외부 config 적용하는법 
 
-    // Elasticsearch 연동을 위한 스타터 (Spring Data Elasticsearch, Repository 등)
-    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-
-    // JSON 직렬화/역직렬화를 위한 라이브러리 (ObjectMapper 등)
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
-
-    // 롬복 사용 시 컴파일 시점에 필요한 설정 (@Getter, @Builder 등 코드 자동 생성)
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-
-    // 테스트 코드 작성 시 필요한 의존성 (JUnit, MockMvc 등 포함)
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
+```bash 
+java -jar app.jar --spring.config.location=classpath:/config/
 ```
 
+#### properties 기본 로딩 경로(우선순위 높음 -> 낮음 )
 
-## 2. 
+| 위치                   | 설명                               | 우선순위 |
+| -------------------- | -------------------------------- | ---- |
+| `classpath:/config/` | ✅ `src/main/resources/config/` 안 | ★ 1등 |
+| `classpath:/`        | ✅ `src/main/resources/` 안        | 2등   |
+| `file:./config/`     | 외부 경로 (루트 기준 `./config/`)        | 3등   |
+| `file:./`            | 외부 루트 디렉토리                       | 4등   |
 
 

@@ -28,23 +28,35 @@ test {
 }
 
 dependencies {
-    // Lombok
+    // 롬복 사용 시 컴파일 시점에 필요한 설정 (@Getter, @Builder 등 코드 자동 생성)
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    // Spring MVC 및 REST API 개발을 위한 기본 웹 스타터
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // JPA
+    // Redis 사용을 위한 스타터 (RedisTemplate, @Cacheable 등 지원)
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // Elasticsearch 연동을 위한 스타터 (Spring Data Elasticsearch, Repository 등)
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    // JSON 직렬화/역직렬화를 위한 라이브러리 (ObjectMapper 등)
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    // 테스트 코드 작성 시 필요한 의존성 (JUnit, MockMvc 등 포함)
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB 드라이버
 
     // 테스트에서도 lombok 쓰는 경우
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
-
-    implementation 'org.springframework.boot:spring-boot-starter-web' // REST API
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // JPA
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis' // Redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch' // Elasticsearch
-    implementation 'com.fasterxml.jackson.core:jackson-databind' // JSON 직렬화
-
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB 드라이버
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mockito:mockito-core:3.+'
     testImplementation 'org.assertj:assertj-core:3.11.1'
 }
+
+gradle.taskGraph.whenReady {
+    def runtime = Runtime.runtime
+    println "🧠 JVM Memory Info"
+    println "  Max Memory   : ${runtime.maxMemory() / (1024 * 1024)} MB"
+    println "  Total Memory : ${runtime.totalMemory() / (1024 * 1024)} MB"
+    println "  Free Memory  : ${runtime.freeMemory() / (1024 * 1024)} MB"
+}
+
