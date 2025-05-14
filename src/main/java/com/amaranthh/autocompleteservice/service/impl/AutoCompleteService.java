@@ -41,8 +41,8 @@ public class AutoCompleteService implements IAutoCompleteService {
 //        redisTemplate.opsForZSet().incrementScore("popular-keyword", _keyword, 1);
 
         BoolQueryBuilder bool = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("companyId", "H001"))     // ✅ 필터
-                .filter(QueryBuilders.termQuery("category", "환자"))      // ✅ 필터
+                .filter(QueryBuilders.termQuery("companyId", param.get("coCd")))     // ✅ 필터
+                .filter(QueryBuilders.termQuery("category", param.get("category")))      // ✅ 필터
                 .should(QueryBuilders.matchPhrasePrefixQuery("code", _keyword))     // ✅ 검색
                 .should(QueryBuilders.matchPhrasePrefixQuery("name.ko", _keyword).boost(2.0f))
                 .should(QueryBuilders.matchPhrasePrefixQuery("name.en", _keyword));
