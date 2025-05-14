@@ -29,7 +29,10 @@
   },
   "mappings": {
     "properties": {
-      "companyId": {
+      "coCd": {
+        "type": "keyword"
+      },
+      "divCd": {
         "type": "keyword"
       },
       "category": {

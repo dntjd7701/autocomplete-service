@@ -1,16 +1,10 @@
 package com.amaranthh.autocompleteservice.service.impl;
 
 import com.amaranthh.autocompleteservice.model.AutoComplete;
+import com.amaranthh.autocompleteservice.model.Suga;
+import com.amaranthh.autocompleteservice.repository.SugaRepository;
 import com.amaranthh.autocompleteservice.service.IAutoCompleteService;
 import lombok.RequiredArgsConstructor;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.core.SearchHit;
-import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
@@ -18,11 +12,30 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 @Service
 @RequiredArgsConstructor
 public class AutoCompleteService implements IAutoCompleteService {
+
     private final StringRedisTemplate redisTemplate;
-    private final ElasticsearchRestTemplate elasticsearchRestTemplate;
+    private final ElasticsearchService elasticsearchService;
+    private final SugaRepository sugaRepository;
+
+    @Override
+    public void sync(AutoComplete param) {
+        List<Suga> result = sugaRepository.findAvailableSugaByDate(param.getCoCd(), param.getDivCd(), "20250514");
+        List<AutoComplete> docs = result.stream().map(suga ->
+                AutoComplete.builder()
+                        .id(param.getCoCd() + ":" + suga.getSugaCd())
+                        .coCd(param.getCoCd())
+                        .divCd(param.getDivCd())
+                        .category(param.getCategory())
+                        .code(suga.getSugaCd())
+                        .name(suga.getPrscNm())
+                        .build()).collect(Collectors.toList());
+
+        elasticsearchService.buildIndex(docs);
+    }
 
     @Override
     public List<AutoComplete> getSuggestions(Map<String, String> param) throws Exception {
@@ -39,25 +52,7 @@ public class AutoCompleteService implements IAutoCompleteService {
 
         // ZREVRANGE popular:keywords 0 9 WITHSCORES
 //        redisTemplate.opsForZSet().incrementScore("popular-keyword", _keyword, 1);
-
-        BoolQueryBuilder bool = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("companyId", param.get("coCd")))     // ✅ 필터
-                .filter(QueryBuilders.termQuery("category", param.get("category")))      // ✅ 필터
-                .should(QueryBuilders.matchPhrasePrefixQuery("code", _keyword))     // ✅ 검색
-                .should(QueryBuilders.matchPhrasePrefixQuery("name.ko", _keyword).boost(2.0f))
-                .should(QueryBuilders.matchPhrasePrefixQuery("name.en", _keyword));
-
-
-        NativeSearchQuery query = new NativeSearchQueryBuilder()
-                .withQuery(bool)
-                .withPageable(PageRequest.of(0, 10))
-                .build();
-
-        SearchHits<AutoComplete> hits = elasticsearchRestTemplate.search(query, AutoComplete.class);
-
-        return hits.getSearchHits().stream()
-                .map(SearchHit::getContent)
-                .collect(Collectors.toList());
+        return elasticsearchService.search(param);
     }
 
     @Override
@@ -79,4 +74,6 @@ public class AutoCompleteService implements IAutoCompleteService {
 
         return keywordScoreMap;
     }
+
+
 }

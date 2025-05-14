@@ -16,6 +16,12 @@ public class AutoCompleteController {
 
     private final IAutoCompleteService iAutoCompleteService;
 
+    @PostMapping("/sync")
+    public void sync(@RequestBody AutoComplete param) throws Exception {
+        iAutoCompleteService.sync(param);
+//        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/getSuggestions")
     public ResponseEntity<List<AutoComplete>> getSuggestions(@RequestBody Map<String, String> param) throws Exception {
         List<AutoComplete> suggestions = iAutoCompleteService.getSuggestions(param);
