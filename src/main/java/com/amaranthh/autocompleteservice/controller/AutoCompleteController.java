@@ -16,13 +16,6 @@ public class AutoCompleteController {
 
     private final IAutoCompleteService iAutoCompleteService;
 
-    @PostMapping("/getPopularKeyword")
-    public ResponseEntity<Map<String, Double>> asyncSuga(@RequestBody Map<String, Integer> range) throws Exception {
-        Map<String, Double> suggestions = iAutoCompleteService.getPopularKeyword(range);
-        return ResponseEntity.ok(suggestions);
-    }
-
-
     @PostMapping("/getSuggestions")
     public ResponseEntity<List<AutoComplete>> getSuggestions(@RequestBody Map<String, String> param) throws Exception {
         List<AutoComplete> suggestions = iAutoCompleteService.getSuggestions(param);

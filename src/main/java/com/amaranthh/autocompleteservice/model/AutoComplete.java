@@ -19,7 +19,6 @@ public class AutoComplete {
     private String id;  // ES 문서의 _id
     private String coCd;
     private String code;
-    private String nameKo;
-    private String nameEn;
+    private String name;
     private String category;
 }

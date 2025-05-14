@@ -29,17 +29,28 @@
   },
   "mappings": {
     "properties": {
+      "companyId": {
+        "type": "keyword"
+      },
+      "category": {
+        "type": "keyword"
+      },
       "code": {
         "type": "text",
         "analyzer": "autocomplete_en"
       },
-      "name_ko": {
+      "name": {
         "type": "text",
-        "analyzer": "autocomplete_ko"
-      },
-      "name_en": {
-        "type": "text",
-        "analyzer": "autocomplete_en"
+        "fields": {
+          "ko": {
+            "type": "text",
+            "analyzer": "autocomplete_ko"
+          },
+          "en": {
+            "type": "text",
+            "analyzer": "autocomplete_en"
+          }
+        }
       }
     }
   }

@@ -38,14 +38,18 @@ public class AutoCompleteService implements IAutoCompleteService {
         }
 
         // ZREVRANGE popular:keywords 0 9 WITHSCORES
-        redisTemplate.opsForZSet().incrementScore("popular-keyword", _keyword, 1);
+//        redisTemplate.opsForZSet().incrementScore("popular-keyword", _keyword, 1);
 
-        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery()
-                .should(QueryBuilders.matchPhrasePrefixQuery("code", _keyword))     // ID 기준 검색
-                .should(QueryBuilders.matchPhrasePrefixQuery("name", _keyword));   // name 기준 검색
+        BoolQueryBuilder bool = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery("companyId", "H001"))     // ✅ 필터
+                .filter(QueryBuilders.termQuery("category", "환자"))      // ✅ 필터
+                .should(QueryBuilders.matchPhrasePrefixQuery("code", _keyword))     // ✅ 검색
+                .should(QueryBuilders.matchPhrasePrefixQuery("name.ko", _keyword).boost(2.0f))
+                .should(QueryBuilders.matchPhrasePrefixQuery("name.en", _keyword));
+
 
         NativeSearchQuery query = new NativeSearchQueryBuilder()
-                .withQuery(boolQuery)
+                .withQuery(bool)
                 .withPageable(PageRequest.of(0, 10))
                 .build();
 

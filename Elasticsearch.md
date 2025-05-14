@@ -74,6 +74,22 @@ curl -u elastic:1234 -X PUT http://localhost:9200/autocomplete-index \
   }'
 
 ```
+
+```bash 
+# 1. 기존 인덱스 삭제
+curl -X DELETE http://localhost:9200/autocomplete-index
+
+# 2. 새 인덱스 생성
+curl -u elastic:1234 -X PUT http://localhost:9200/autocomplete-index \
+  -H "Content-Type: application/json" \
+  -d @autocomplete-index.json
+```
+
+```bash
+curl -X POST http://localhost:9200/_bulk \
+  -H "Content-Type: application/json" \
+  --data-binary @bulk_data.json
+```
 ✅ 정리
 
 | 확인 작업     | 명령어                                       |
