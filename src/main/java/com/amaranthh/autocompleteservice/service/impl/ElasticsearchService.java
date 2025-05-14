@@ -83,12 +83,14 @@ public class ElasticsearchService {
     }
 
     public void delete(Map<String, String> param) {
-//        NativeSearchQuery query = new NativeSearchQueryBuilder()
-//                .withQuery(QueryBuilders.boolQuery()
-//                        .must(QueryBuilders.termQuery("companyId", "1352"))
-//                        .must(QueryBuilders.termQuery("category", "SUGA"))
-//                ).build();
+        elasticsearchRestTemplate.delete("abc123", IndexCoordinates.of("autocomplete-index"));
+    }
+
+    public void update(Map<String, String> param) {
+//        IndexQuery query = new IndexQuery();
+//        query.setId("abc123");
+//        query.setObject(autoCompleteDoc); // 도큐먼트 객체
 //
-//        elasticsearchRestTemplate.delete(query, AutoComplete.class);  // 인덱스 매핑된 클래스
+//        elasticsearchRestTemplate.index(query, IndexCoordinates.of("autocomplete-suga"));
     }
 }

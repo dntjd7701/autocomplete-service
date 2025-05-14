@@ -108,3 +108,11 @@ java -jar app.jar --spring.config.location=classpath:/config/
 | `file:./`            | 외부 루트 디렉토리                       | 4등   |
 
 
+---
+
+# 2025-05-14 Transactional Outbox + Debezium + Kafka 패턴 테스트 추가 
+
+### 흐름도 
+
+[Spring JPA] → [Outbox 테이블에 INSERT] → [Debezium (Kafka Connect)] → [Kafka Topic] → [Consumer] → [Elasticsearch 저장]
+
