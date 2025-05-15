@@ -51,8 +51,29 @@ public class AutoCompleteService implements IAutoCompleteService {
         }
 
         // ZREVRANGE popular:keywords 0 9 WITHSCORES
+
+
+//        String redisKey = param.get();
+        List<AutoComplete> result  =  elasticsearchService.search(param);
+//        String redisKey = String.format("auto:%s:%s:%s:%s", param.get("coCd"), param.get("divCd"), param.get("category"), _keyword);
+//        List<AutoComplete> redisResult = redisTemplate.opsForValue().get(redisKey);
+//        if(redisTemplate.opsForValue().get(redisKey) == null) {
+//
+//        }
+//        // 조회
+//        Object cached = redisTemplate.opsForValue().get(redisKey);
+//        List<AutoComplete> redisResult = cached != null
+//                ? objectMapper.convertValue(cached, new TypeReference<List<AutoComplete>>() {})
+//                : null;
+//
+//        // 저장
+//        if (redisResult == null) {
+//            List<AutoComplete> esResult = elasticsearchService.query(...);
+//            redisTemplate.opsForValue().set(redisKey, esResult, Duration.ofSeconds(60));
+//        }
+
 //        redisTemplate.opsForZSet().incrementScore("popular-keyword", _keyword, 1);
-        return elasticsearchService.search(param);
+        return result;
     }
 
     @Override

@@ -116,3 +116,57 @@ java -jar app.jar --spring.config.location=classpath:/config/
 
 [Spring JPA] → [Outbox 테이블에 INSERT] → [Debezium (Kafka Connect)] → [Kafka Topic] → [Consumer] → [Elasticsearch 저장]
 
+---
+
+# Jmeter test
+
+result.jtl 분석
+
+```bash
+jmeter -n -t autocomplete-load-test.jmx -l result.jtl
+```
+
+GUI 생성 
+
+```bash
+jmeter -n -t autocomplete-load-test.jmx -l result.jtl -e -o report
+open report/index.html  
+```
+
+ThreadGroup.num_threads: 1000
+
+ThreadGroup.ramp_time: 10
+
+LoopController.loops: 10
+
+## Result  
+
+wildcard 는 기본적으로 캐싱처리가 되지 않기에 매번 새로운 조회를 시도
+
+keyword: *펜타*
+
+## (Before Redis Caching)
+
+>summary +   5657 in 00:00:08 =  749.5/s Avg:   317 Min:    35 Max:   453 Err:     0 (0.00%) Active: 340 Started: 754 Finished: 414
+
+> summary +   4343 in 00:00:05 =  801.7/s Avg:   380 Min:    88 Max:   578 Err:     0 (0.00%) Active: 0 Started: 1000 Finished: 1000
+
+> summary =  10000 in 00:00:13 =  771.2/s Avg:   345 Min:    35 Max:   578 Err:     0 (0.00%)
+
+| 항목               | 값               | 설명                    |
+| ---------------- | --------------- | --------------------- |
+| **총 요청 수**       | `10,000`        | 아주 큰 볼륨의 테스트          |
+| **총 소요 시간**      | `13초`           | 고속 처리 환경              |
+| **평균 처리량**       | `771.2 req/sec` | 1초에 약 770건 처리 (우수)    |
+| **평균 응답시간**      | `345 ms`        | 실무 기준으로 괜찮은 수준        |
+| **최소 / 최대 응답시간** | `35 / 578 ms`   | 응답 편차는 약간 있지만 허용 범위 내 |
+| **에러율**          | `0%`            | 전 요청 성공, 안정성 최고 👍    |
+
+8코어 기준 50% 순간 사용량 발견
+최대 응답시간 412ms
+
+# (After Redis Caching)
+
+.. 다만 정해진 키워드라 너무 긍정적인 테스트 기준이라 생각함
+
+
