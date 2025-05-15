@@ -4,11 +4,15 @@ import com.amaranthh.autocompleteservice.model.AutoComplete;
 import com.amaranthh.autocompleteservice.model.Suga;
 import com.amaranthh.autocompleteservice.repository.SugaRepository;
 import com.amaranthh.autocompleteservice.service.IAutoCompleteService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,7 +21,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AutoCompleteService implements IAutoCompleteService {
 
-    private final StringRedisTemplate redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
+    private final ObjectMapper objectMapper;
+    private final StringRedisTemplate stringRedisTemplate;
     private final ElasticsearchService elasticsearchService;
     private final SugaRepository sugaRepository;
 
@@ -53,14 +59,14 @@ public class AutoCompleteService implements IAutoCompleteService {
         // ZREVRANGE popular:keywords 0 9 WITHSCORES
 
 
-//        String redisKey = param.get();
-        List<AutoComplete> result  =  elasticsearchService.search(param);
-//        String redisKey = String.format("auto:%s:%s:%s:%s", param.get("coCd"), param.get("divCd"), param.get("category"), _keyword);
-//        List<AutoComplete> redisResult = redisTemplate.opsForValue().get(redisKey);
-//        if(redisTemplate.opsForValue().get(redisKey) == null) {
-//
-//        }
-//        // 조회
+        String redisKey = String.format("auto:%s:%s:%s:%s", param.get("coCd"), param.get("divCd"), param.get("category"), _keyword);
+        Object redisResult = redisTemplate.opsForValue().get(redisKey);
+        if(redisResult == null) {
+            List<AutoComplete> result  = elasticsearchService.search(param);
+            redisTemplate.opsForValue().set(redisKey, result, Duration.ofSeconds(60));
+            return result;
+        }
+        return objectMapper.convertValue(redisResult, new TypeReference<List<AutoComplete>>() {});
 //        Object cached = redisTemplate.opsForValue().get(redisKey);
 //        List<AutoComplete> redisResult = cached != null
 //                ? objectMapper.convertValue(cached, new TypeReference<List<AutoComplete>>() {})
@@ -73,7 +79,6 @@ public class AutoCompleteService implements IAutoCompleteService {
 //        }
 
 //        redisTemplate.opsForZSet().incrementScore("popular-keyword", _keyword, 1);
-        return result;
     }
 
     @Override
@@ -83,7 +88,7 @@ public class AutoCompleteService implements IAutoCompleteService {
 
         // ZREVRANGE WITHSCORES
         Set<ZSetOperations.TypedTuple<String>> result =
-                redisTemplate.opsForZSet().reverseRangeWithScores("popular-keyword", start, end);
+                stringRedisTemplate.opsForZSet().reverseRangeWithScores("popular-keyword", start, end);
 
         // 결과를 Map<String, Double> 형태로 변환
         if (result == null) return Collections.emptyMap();
