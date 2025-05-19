@@ -1,5 +1,28 @@
 # Elasticsearch
 
+## Linux server 
+
+[//]: # (no docker DB server)
+
+#### plugin 설치 
+
+```bash
+./bin/elasticsearch-plugin install analysis-nori
+```
+
+#### index 적용 
+
+```bash
+curl -u id:pw-X PUT https://10.82.6.163:19204/autocomplete-index \
+-H "Content-Type: application/json" \
+-d @autocomplete-index.json
+```
+
+
+
+
+---
+
 ### 한글 형태소 nori plugin 설치 
 
 ```bash

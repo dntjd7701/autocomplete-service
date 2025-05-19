@@ -1,13 +1,17 @@
 # 테스트용으로만 처리. localhost 서버 정보만 기입할것.
 server:
   port: 8018
+
 spring:
+  profiles:
+    active: local
   redis:
     host: localhost
     port: 6380
     password: 1234
   elasticsearch:
     rest:
+#      uris: http://localhost:9200
       uris: http://localhost:9200
       username: elastic
       password: 1234
