@@ -57,8 +57,6 @@ public class AutoCompleteService implements IAutoCompleteService {
         }
 
         // ZREVRANGE popular:keywords 0 9 WITHSCORES
-
-
         String redisKey = String.format("auto:%s:%s:%s:%s", param.get("coCd"), param.get("divCd"), param.get("category"), _keyword);
         Object redisResult = redisTemplate.opsForValue().get(redisKey);
         if(redisResult == null) {

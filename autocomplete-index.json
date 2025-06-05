@@ -29,13 +29,16 @@
   },
   "mappings": {
     "properties": {
+      "schema": {
+        "type": "keyword"
+      },
+      "category": {
+        "type": "keyword"
+      },
       "coCd": {
         "type": "keyword"
       },
       "divCd": {
-        "type": "keyword"
-      },
-      "category": {
         "type": "keyword"
       },
       "code": {

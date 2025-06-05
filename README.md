@@ -120,7 +120,7 @@ java -jar app.jar --spring.config.location=classpath:/config/
 
 # Jmeter test
 
-result.jtl 분석
+result.jtl 분석w
 
 ```bash
 jmeter -n -t autocomplete-load-test.jmx -l result.jtl
@@ -170,3 +170,9 @@ keyword: *펜타*
 .. 다만 정해진 키워드라 너무 긍정적인 테스트 기준이라 생각함
 
 
+---
+
+# Schema 메모리 확인 
+
+1. elasticsearch-index schema key 추가 
+2. schema 별 데이터 추가. 메모리 사용량 확인 필요 
