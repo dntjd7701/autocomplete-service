@@ -20,6 +20,13 @@ import java.security.cert.X509Certificate;
 @Configuration
 public class ElasticsearchConfig {
 
+//    @Bean
+//    public ElasticsearchConverter elasticsearchConverter(
+//            MappingElasticsearchConverter converter) {
+//        converter.setTypeMapper(new DefaultElasticsearchTypeMapper(null));
+//        return converter;
+//    }
+
     @Bean
     public ElasticsearchClient elasticsearchClient() throws Exception {
         TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;

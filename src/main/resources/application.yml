@@ -5,10 +5,6 @@ server:
 spring:
   profiles:
     active: local
-  redis:
-    host: localhost
-    port: 6380
-    password: 1234
   elasticsearch:
     rest:
 #      uris: http://localhost:9200
@@ -30,7 +26,10 @@ spring:
         dialect: org.hibernate.dialect.MariaDBDialect
     show-sql: true     # 콘솔에 SQL 출력
     format-sql: true
-
+  data:
+    redis:
+      port: 6380
+      host: localhost
 logging:
   level:
     root: info
