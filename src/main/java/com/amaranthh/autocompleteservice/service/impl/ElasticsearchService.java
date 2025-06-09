@@ -107,37 +107,6 @@ public class ElasticsearchService {
                         AutoComplete.class
                 );
 
-//            SearchResponse<Map> response = elasticsearchClient.search(s -> s
-//                            .index(INDEX_NAME)
-//                            .size(10)
-//                            .query(q -> q
-//                                    .bool(b -> b
-//                                            // 🔶 filter → 반드시 일치해야 하는 필터 조건 (score 에 영향 X, 빠름)
-//                                            .filter(f -> f.term(t -> t.field("coCd").value(param.get("coCd"))))   // coCd 가 정확히 param.get("coCd") 와 일치
-//                                            .filter(f -> f.term(t -> t.field("divCd").value(param.get("divCd")))) // divCd 가 정확히 param.get("divCd") 와 일치
-//                                            .filter(f -> f.term(t -> t.field("category").value(param.get("category")))) // category 가 정확히 param.get("category") 와 일치
-//
-//                                            // 🔶 should → OR 조건, relevance score 에 영향 줌 (match 또는 matchPhrasePrefix 로 사용)
-//                                            .should(s1 -> s1.matchPhrasePrefix(mp -> mp
-//                                                    .field("code")           // code 필드에서
-//                                                    .query(_keyword)))       // _keyword로 시작하는 문장(prefix) 매칭
-//
-//                                            .should(s2 -> s2.matchPhrasePrefix(mp -> mp
-//                                                    .field("name.ko")        // name.ko 필드에서
-//                                                    .query(_keyword)         // _keyword로 시작하는 문장(prefix) 매칭
-//                                                    .boost(2.0f)))           // 이 조건에 가중치(중요도) 2배 부여 → 우선순위 높음
-//
-//                                            .should(s3 -> s3.matchPhrasePrefix(mp -> mp
-//                                                    .field("name.en")        // name.en 필드에서
-//                                                    .query(_keyword)))       // _keyword로 시작하는 문장(prefix) 매칭
-//                                    )
-//                            ),
-//                    Map.class
-//            );
-
-//            response.hits().hits().forEach(hit -> {
-//                System.out.println("Found document: " + hit.source());
-//            });
             return response.hits().hits().stream()
                     .map(hit -> {
                         AutoComplete doc = hit.source();
@@ -199,6 +168,8 @@ public class ElasticsearchService {
 
         long duration = System.currentTimeMillis() - start;
         log.info("🎉 인덱싱 완료! 총 소요 시간: {}ms", duration);
+
+//        🎉 인덱싱 완료! 총 소요 시간: 27264ms
     }
 
     public void delete(String id){

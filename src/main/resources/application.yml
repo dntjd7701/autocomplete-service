@@ -30,6 +30,7 @@ spring:
     redis:
       port: 6380
       host: localhost
+      password: 1234
 logging:
   level:
     root: info

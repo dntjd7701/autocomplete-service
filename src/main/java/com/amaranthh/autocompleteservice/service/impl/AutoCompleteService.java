@@ -58,13 +58,13 @@ public class AutoCompleteService implements IAutoCompleteService {
 
         // ZREVRANGE popular:keywords 0 9 WITHSCORES
         String redisKey = String.format("auto:%s:%s:%s:%s", param.get("coCd"), param.get("divCd"), param.get("category"), _keyword);
-//        Object redisResult = redisTemplate.opsForValue().get(redisKey);
-//        if(redisResult == null) {
+        Object redisResult = redisTemplate.opsForValue().get(redisKey);
+        if(redisResult == null) {
             List<AutoComplete> result  = elasticsearchService.search(param);
-//            redisTemplate.opsForValue().set(redisKey, result, Duration.ofSeconds(60));
+            redisTemplate.opsForValue().set(redisKey, result, Duration.ofSeconds(60));
             return result;
-//        }
-//        return objectMapper.convertValue(redisResult, new TypeReference<List<AutoComplete>>() {});
+        }
+        return objectMapper.convertValue(redisResult, new TypeReference<List<AutoComplete>>() {});
 //        Object cached = redisTemplate.opsForValue().get(redisKey);
 //        List<AutoComplete> redisResult = cached != null
 //                ? objectMapper.convertValue(cached, new TypeReference<List<AutoComplete>>() {})
@@ -75,7 +75,7 @@ public class AutoCompleteService implements IAutoCompleteService {
 //            List<AutoComplete> esResult = elasticsearchService.query(...);
 //            redisTemplate.opsForValue().set(redisKey, esResult, Duration.ofSeconds(60));
 //        }
-
+//
 //        redisTemplate.opsForZSet().incrementScore("popular-keyword", _keyword, 1);
     }
 
